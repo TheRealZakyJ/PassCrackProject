@@ -16,7 +16,7 @@ public class PassCrackZak {
 
 
     public static void main(String[] args) {
-        System.out.println("Your first argument is: "+args[0]);
+       // System.out.println("Your first argument is: "+args[0]);
         password=args[0];
         passType = args[1];
         if(passType.equals("brute")) {
@@ -42,7 +42,7 @@ public class PassCrackZak {
         for (int i = 0; i < charLen; i++) {
            // guessPass.setCharAt(index, charArr[i]);
             gPass.set(index,Character.toString(charArr[i]));
-            System.out.println(gPass.toString() + " in"+String.join("",gPass));
+            System.out.println(String.join("",gPass));
            /* if (guessPass.toString().equals(password)) {
                 System.out.println("Here is the password: " + guessPass);
                 solved = true;
