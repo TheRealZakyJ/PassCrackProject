@@ -8,37 +8,38 @@ import java.util.*;
 
 public class PassCrackAyeman {
     private static ArrayList<String> wordList;
-    private static String password;
-    private static String passType;
+    private static String password = "";
+    private static String passType = "";
 
 
 
        public static void main(String[] args) throws FileNotFoundException {
 
-           Scanner s = new Scanner(new File("10k-most-common.txt"));
-           //System.out.println(s.next());
-
-           //for(String line: FileUtils.readLines("10k-most-common.txt"))
-           //    System.out.prin(line);
-           password = args[0];
-           passType = args[1];
            File f = new File("10k-most-common.txt");
            try{
                wordList = get_arraylist_from_file(f);
-              /* for(int x = 0; x < wordList.size(); x++){
-                  // System.out.println(wordList.get(x));
-               }
+               //for(int x = 0; x < wordList.size(); x++){
+               // System.out.println(wordList.get(x));
+               // }
 
-               */
-           }
-           catch(Exception e){
+
+           } catch (FileNotFoundException e) {
                e.printStackTrace();
            }
-           System.out.println("dn");
+
+           //Scanner s = new Scanner(new File("10k-most-common.txt"));
+           //System.out.println(s.next());
+
+           //for(String line: FileUtils.readLines("10k-most-common.txt"))
+           //    System.out.print(line);
+           password = "thomas";
+           passType = "dict";
+
+           //System.out.println("dn");
            if(passType.equals("dict")) {
                dict(password);
            }
-           System.out.println("don1");
+           //System.out.println("don1");
        }
 
     public static ArrayList<String> get_arraylist_from_file(File f) throws FileNotFoundException {
@@ -47,10 +48,10 @@ public class PassCrackAyeman {
 
         while (s.hasNext()) {
             list.add(s.next());
-        }
+       }
         s.close();
-        wordList=list;
-        return wordList;
+       wordList=list;
+       return wordList;
 
     }
 
