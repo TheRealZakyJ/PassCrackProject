@@ -9,7 +9,7 @@ public class PassCrackZak {
     private static char[] charArr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 
     private static int charLen = charArr.length;
-    private static boolean solved;
+    private static boolean solved = false;
 
     //private static int lastInd = guessPass.length()-1;
 
@@ -17,9 +17,8 @@ public class PassCrackZak {
 
     public static void main(String[] args) {
        // System.out.println("Your first argument is: "+args[0]);
-        solved = false;
-        password="a2H";
-        passType = "brute";
+        password=args[0];
+        passType = args[1];
         if(passType.equals("brute")) {
 
             while (!solved) {
@@ -27,10 +26,8 @@ public class PassCrackZak {
                 gPass.add(Character.toString(charArr[0]));
                 //System.out.println(guessPass.length()+"len");
                 for (int i = 0; i < gPass.size()-1; i++) {
-
                     for (int j = 0; j < charLen; j++) {
                         //guessPass.setCharAt(i, charArr[j]);
-
                         gPass.set(i,Character.toString(charArr[j]));
                         //System.out.println(gPass.toString() + "forst" + i + j);
                         solved = brute(i + 1);
@@ -44,12 +41,6 @@ public class PassCrackZak {
     public static boolean brute(int index) {
         for (int i = 0; i < charLen; i++) {
            // guessPass.setCharAt(index, charArr[i]);
-            if(solved){
-                System.out.println("||||||");
-                break;
-
-            }
-
             gPass.set(index,Character.toString(charArr[i]));
             System.out.println(String.join("",gPass));
            /* if (guessPass.toString().equals(password)) {
@@ -64,22 +55,23 @@ public class PassCrackZak {
             if (String.join("",gPass).equals(password)) {
                 System.out.println("Here is the password: " + String.join("",gPass));
                 solved = true;
-                //System.out.println(solved);
                 //return true;
-                //break;
+                //break;.ja
                 System.exit(0);
             }
-
             /*if (index < guessPass.length()-1) {
                 brute(index + 1);
             }
 
              */
-            if ((index < gPass.size()-1) && !solved) {
+            if (index < gPass.size()-1) {
                 brute(index + 1);
             }
         }
+        //System.out.println(guessPass.toString() + "end");
         return false;
     }
 
 }
+
+
