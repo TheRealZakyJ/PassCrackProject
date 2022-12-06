@@ -15,6 +15,27 @@ public class PassCrackAyeman {
 
        public static void main(String[] args) throws FileNotFoundException {
 
+           Scanner s = new Scanner(new File("10k-most-common.txt"));
+           ArrayList<String> list = new ArrayList<>();
+           String[] list1 = new String[10000];
+           while (s.hasNext()){
+               String line = s.nextLine();
+               System.out.println(line);
+               list.add(line);
+               //list[]
+
+           }
+           /*for(int i=0;i< list1.length;i++){
+               String line = s.nextLine();
+               System.out.println(line);
+               list1[i]=line;
+           }
+
+            */
+           //s.close();
+           wordList=list;
+           //Arrays.toString(list1);
+           /*
            File f = new File("10k-most-common.txt");
            try{
                wordList = get_arraylist_from_file(f);
@@ -27,13 +48,15 @@ public class PassCrackAyeman {
                e.printStackTrace();
            }
 
+            */
+
            //Scanner s = new Scanner(new File("10k-most-common.txt"));
            //System.out.println(s.next());
 
            //for(String line: FileUtils.readLines("10k-most-common.txt"))
            //    System.out.print(line);
-           password = "thomas";
-           passType = "dict";
+           password = args[0];
+           passType = args[1];
 
            //System.out.println("dn");
            if(passType.equals("dict")) {
@@ -50,14 +73,16 @@ public class PassCrackAyeman {
             list.add(s.next());
        }
         s.close();
-       wordList=list;
-       return wordList;
+
+       return list;
 
     }
 
     public static void dict(String pass){
         if(wordList.contains(pass)){
-            System.out.println(pass);
+            System.out.println(wordList.indexOf(pass));
+        }else{
+            System.out.println("Not in password list.");
         }
     }
 
