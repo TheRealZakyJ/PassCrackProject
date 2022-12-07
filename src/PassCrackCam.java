@@ -2,6 +2,7 @@ import java.util.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 
 public class PassCrackCam {
@@ -19,16 +20,16 @@ public class PassCrackCam {
 
     public static void main(String[] args) throws NoSuchAlgorithmException{
         // System.out.println("Your first argument is: "+args[0]);
-        password=args[0];
-        //password = "camoin";
-        System.out.println(getMd5(password));
+        //password=args[0];
+        password = "camoin";
+        System.out.println(THESHA256(password));
 
 
     }
 
 
 
-    public static String getMd5(String input) throws NoSuchAlgorithmException{
+    /* public static String getMd5(String input) throws NoSuchAlgorithmException{
         MessageDigest md = MessageDigest.getInstance("MD5");
 
         byte[] digestion = md.digest(input.getBytes());
@@ -44,10 +45,25 @@ public class PassCrackCam {
         }
         return hashtext;
     }
+*/
+    public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-    public static String bcrypt(String input) {
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
 
-        return null;
+    public static String toFLEXSTRING(byte[] hash)
+    {
+        BigInteger number = new BigInteger(1, hash);
+
+        StringBuilder FLEXSTRING = new StringBuilder(number.toString(16));
+
+        while (FLEXSTRING.length() < 64)
+        {
+            FLEXSTRING.insert(0, '0');
+        }
+
+        return FLEXSTRING.toString();
     }
 }
 
