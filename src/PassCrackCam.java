@@ -16,9 +16,6 @@ public class PassCrackCam {
     private static int charLen = charArr.length;
     private static boolean solved = false;
 
-    //private static int lastInd = guessPass.length()-1;
-
-
 
     public static void main(String[] args) throws NoSuchAlgorithmException{
         // System.out.println("Your first argument is: "+args[0]);
