@@ -2,8 +2,7 @@ import java.util.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
-import bcrypt;
-import jBCrypt;
+
 
 public class PassCrackCam {
 
@@ -53,7 +52,6 @@ public class PassCrackCam {
 
         return null;
     }
-
 }
 
 
