@@ -20,12 +20,6 @@ Java Password Cracker
         
         -h = hashed
 
-        -m = MD5 Hashed
-     
-        -b = BCrppt
-        
-        -s = sha256 hashed
-
 
         brute = brute force attack
 
