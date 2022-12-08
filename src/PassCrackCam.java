@@ -2,6 +2,8 @@ import java.util.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+
 
 public class PassCrackCam {
 
@@ -15,87 +17,70 @@ public class PassCrackCam {
     private static int charLen = charArr.length;
     private static boolean solved = false;
 
-    //private static int lastInd = guessPass.length()-1;
-
-
 
     public static void main(String[] args) throws NoSuchAlgorithmException{
         // System.out.println("Your first argument is: "+args[0]);
         //password=args[0];
-        password = "monk";
-        System.out.println(getMd5(password));
-        /*passType = "brute";
-
-        if(passType.equals("brute")) {
-
-            while (!solved) {
-                // guessPass.append(charArr[0]);
-                gPass.add(Character.toString(charArr[0]));
-                //System.out.println(guessPass.length()+"len");
-                for (int i = 0; i < gPass.size()-1; i++) {
-                    for (int j = 0; j < charLen; j++) {
-                        //guessPass.setCharAt(i, charArr[j]);
-                        gPass.set(i,Character.toString(charArr[j]));
-                        //System.out.println(gPass.toString() + "forst" + i + j);
-                        solved = brute(i + 1);
-                        //System.out.println("sec");
-                    }
-                }
-            }
-        }
-        //PassCrackCam encrypter = new PassCrackCam();
-
-         */
-
+        password = "camoin";
+        System.out.println(toHexString(THESHA256("GeeksForGeeks")));
+        System.out.println(getMd5("GeeksForGeeks"));
 
 
     }
 
-    public static boolean brute(int index) {
-        for (int i = 0; i < charLen; i++) {
-            // guessPass.setCharAt(index, charArr[i]);
-            gPass.set(index,Character.toString(charArr[i]));
-            System.out.println(String.join("",gPass));
-           /* if (guessPass.toString().equals(password)) {
-                System.out.println("Here is the password: " + guessPass);
-                solved = true;
-                return true;
-                //break;
-                //System.exit(0);
-            }
 
-            */
-            if (String.join("",gPass).equals(password)) {
-                System.out.println("Here is the password: " + String.join("",gPass));
-                solved = true;
-                //return true;
-                //break;.ja
-                System.exit(0);
-            }
-            /*if (index < guessPass.length()-1) {
-                brute(index + 1);
-            }
-
-             */
-            if (index < gPass.size()-1) {
-                brute(index + 1);
-            }
-        }
-        //System.out.println(guessPass.toString() + "end");
-        return false;
-    }
 
     public static String getMd5(String input) throws NoSuchAlgorithmException{
         MessageDigest md = MessageDigest.getInstance("MD5");
 
         byte[] digestion = md.digest(input.getBytes());
+        byte[] messageDigest = md.digest(input.getBytes());
 
-        BigInteger IIIINT = new BigInteger(digestion);
+        BigInteger IIIINT = new BigInteger(1, messageDigest);
 
-        return IIIINT.toString();
+        String hashtext = IIIINT.toString(16);
+
+
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
+        }
+        return hashtext;
     }
 
+    public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
 
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash)
+    {
+        BigInteger num = new BigInteger(1, hash);
+
+        StringBuilder hexString = new StringBuilder(num.toString(16));
+
+        /*while (hexString.length() < 64)
+        {
+            hexString.insert(0, '0');
+        } */
+
+        return hexString.toString();
+    }
+
+    public static String toFLEXSTRING(byte[] hash)
+    {
+        BigInteger number = new BigInteger(1, hash);
+
+        StringBuilder FLEXSTRING = new StringBuilder(number.toString(16));
+
+        while (FLEXSTRING.length() < 64)
+        {
+            FLEXSTRING.insert(0, '0');
+        }
+
+        return FLEXSTRING.toString();
+    }
 }
+
 
 
