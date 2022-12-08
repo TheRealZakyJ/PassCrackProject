@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,15 +17,15 @@ public class PassCracking {
     private static boolean solved = false;
     private static String hashOrNah;
     private static ArrayList<String> wordList;
+    private static String hashType;
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-
+    public static void main(String[] args) throws FileNotFoundException, NoSuchAlgorithmException {
         password = args[0];
-        passType = args[1];
-        hashOrNah = args[2];
-        if (passType.equals("brute") && (hashOrNah.equals("-p"))) {
-
+       passType = args[1];
+       hashOrNah = args[2];
+        if (passType.equals("brute")) {
+            hashType=identify(password);
             while (!solved) {
 
                 gPass.add(Character.toString(charArr[0]));
@@ -36,7 +39,8 @@ public class PassCracking {
                     }
                 }
             }
-        } else if (passType.equals("dict") && (hashOrNah.equals("-p"))) {
+
+        } else if (passType.equals("dict")) {
             Scanner s = new Scanner(new File("10k-most-common.txt"));
             ArrayList<String> list = new ArrayList<>();
             //String[] list1 = new String[10000];
@@ -48,13 +52,10 @@ public class PassCracking {
             if(hashOrNah.equals("-p")) {
                 dict(password);
             }else if(hashOrNah.equals("-h")){
-
+                hashType=identify(password);
+                System.out.println(hashDict(hashType,password));
             }
-
         }
-
-
-
     }
     public static String identify(String password){
         String hash = "";
@@ -91,6 +92,24 @@ public class PassCracking {
         }
         return false;
     }
+    public static String hashbrute(int index, String hashType){
+        for (int i = 0; i < charLen; i++) {
+
+            gPass.set(index,Character.toString(charArr[i]));
+            System.out.println(String.join("",gPass));
+
+            if (String.join("",gPass).equals(password)) {
+                System.out.println("Here is the password: " + String.join("",gPass));
+                solved = true;
+                System.exit(0);
+            }
+
+            if (index < gPass.size()-1) {
+                brute(index + 1);
+            }
+        }
+        return "";
+    }
 
 
     public static void dict(String pass){
@@ -101,6 +120,50 @@ public class PassCracking {
         }
     }
 
+    public static String hashDict(String hashType,String password) throws NoSuchAlgorithmException {
+        String plaintext="No password found.";
+        String hashedDictWord ="";
+
+        for(int i =0;i<wordList.size();i++){
+            if(hashType.equals("-m")){
+                hashedDictWord=getMd5(wordList.get(i));
+                if(hashedDictWord.equals(password)){
+                    plaintext=wordList.get(i);
+                    break;
+                }
+            }else if(hashType.equals("-s")){
+                hashedDictWord=getMd5(wordList.get(i));
+                if(hashedDictWord.equals(wordList.get(i))){
+                    plaintext=wordList.get(i);
+                    break;
+                }
+            }else if(hashType.equals("-b")){
+                hashedDictWord=getMd5(wordList.get(i));
+                if(hashedDictWord.equals(wordList.get(i))){
+                    plaintext=wordList.get(i);
+                    break;
+                }
+            }
+
+        }
+        return plaintext;
+    }
+    public static String getMd5(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        byte[] digestion = md.digest(input.getBytes());
+        byte[] messageDigest = md.digest(input.getBytes());
+
+        BigInteger IIIINT = new BigInteger(1, messageDigest);
+
+        String hashtext = IIIINT.toString(16);
+
+
+        while (hashtext.length() < 32) {
+            hashtext = "0" + hashtext;
+        }
+        return hashtext;
+    }
 }
 
 
