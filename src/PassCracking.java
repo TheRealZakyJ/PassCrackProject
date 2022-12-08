@@ -45,9 +45,32 @@ public class PassCracking {
                 list.add(line);
             }
             wordList = list;
-            dict(password);
+            if(hashOrNah.equals("-p")) {
+                dict(password);
+            }else if(hashOrNah.equals("-h")){
+
+            }
 
         }
+
+
+
+    }
+    public static String identify(String password){
+        String hash = "";
+        if(password.indexOf("$2") == 0)
+        {
+            hash = "-b";
+        }
+        else if(password.length() == 32)
+        {
+            hash = "-m";
+        }
+        else if(password.length() == 64)
+        {
+            hash = "-s";
+        }
+        return hash;
     }
 
     public static boolean brute(int index) {
@@ -72,7 +95,7 @@ public class PassCracking {
 
     public static void dict(String pass){
         if(wordList.contains(pass)){
-            System.out.println(wordList.get(wordList.indexOf(pass))+wordList.indexOf(pass));
+            System.out.println(wordList.get(wordList.indexOf(pass)));
         }else{
             System.out.println("Not in password list.");
         }
