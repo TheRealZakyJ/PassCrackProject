@@ -7,10 +7,10 @@ Java Password Cracker
 - [x] Able to load dataset of top 10K most common passwords (5)
 - [x] Implement brute force password cracking (10)
 - [x] Implement dictionary attack password cracking (10)
-- [ ] Able to run program via command line (5)
+- [x] Able to run program via command line (5)
 - [x] Able to add arguments when running program via command line (5)
-- [ ] MD5 implemented (5)
-- [x] BCrypt implemented (5)
+- [x] MD5 implemented (5)
+- [ ] BCrypt implemented (5)
 - [x] SHA-256 implemented (5)
 - [x] README.md created (1)
 
@@ -27,11 +27,12 @@ Java Password Cracker
         
   
 
-
-
 ### Formating
 
-    - java PassCracking thomas dict 
-    - java PassCracking d2i0 brute
+    - java PassCracking thomas dict -p
+    - java PassCracking d2i0 brute -p
+    - java PassCracking 4a8da9001f6158b6b1a1a522056b7fd8 brute -h
+    - java PassCracking ef6e65efc188e7dffd7335b646a85a21 dict -h
+
 
 
