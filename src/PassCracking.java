@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -25,21 +26,36 @@ public class PassCracking {
        passType = args[1];
        hashOrNah = args[2];
         if (passType.equals("brute")) {
-            hashType=identify(password);
-            while (!solved) {
+            if(hashOrNah.equals("-p")) {
+                while (!solved) {
 
-                gPass.add(Character.toString(charArr[0]));
+                    gPass.add(Character.toString(charArr[0]));
 
-                for (int i = 0; i < gPass.size() - 1; i++) {
-                    for (int j = 0; j < charLen; j++) {
+                    for (int i = 0; i < gPass.size() - 1; i++) {
+                        for (int j = 0; j < charLen; j++) {
 
-                        gPass.set(i, Character.toString(charArr[j]));
-                        solved = brute(i + 1);
+                            gPass.set(i, Character.toString(charArr[j]));
+                            solved = brute(i + 1);
 
+                        }
+                    }
+                }
+            }else if(hashOrNah.equals("-h")){
+                hashType=identify(password);
+                while (!solved) {
+
+                    gPass.add(Character.toString(charArr[0]));
+
+                    for (int i = 0; i < gPass.size() - 1; i++) {
+                        for (int j = 0; j < charLen; j++) {
+
+                            gPass.set(i, Character.toString(charArr[j]));
+                            solved = hashbrute(i + 1,hashType);
+
+                        }
                     }
                 }
             }
-
         } else if (passType.equals("dict")) {
             Scanner s = new Scanner(new File("10k-most-common.txt"));
             ArrayList<String> list = new ArrayList<>();
@@ -92,23 +108,24 @@ public class PassCracking {
         }
         return false;
     }
-    public static String hashbrute(int index, String hashType){
+    public static boolean hashbrute(int index, String hashType) throws NoSuchAlgorithmException {
         for (int i = 0; i < charLen; i++) {
-
+            String passString= String.join("",gPass);
             gPass.set(index,Character.toString(charArr[i]));
-            System.out.println(String.join("",gPass));
-
-            if (String.join("",gPass).equals(password)) {
-                System.out.println("Here is the password: " + String.join("",gPass));
-                solved = true;
-                System.exit(0);
+            System.out.println(getMd5(passString));
+            if(hashType.equals("-m")) {
+                if (getMd5(passString).equals(password)) {
+                    System.out.println("Here is the password: " + passString);
+                    solved = true;
+                    System.exit(0);
+                }
             }
 
             if (index < gPass.size()-1) {
-                brute(index + 1);
+                hashbrute(index + 1,hashType);
             }
         }
-        return "";
+        return false;
     }
 
 
@@ -132,8 +149,8 @@ public class PassCracking {
                     break;
                 }
             }else if(hashType.equals("-s")){
-                hashedDictWord=getMd5(wordList.get(i));
-                if(hashedDictWord.equals(wordList.get(i))){
+                hashedDictWord=toHexString(THESHA256(wordList.get(i)));
+                if(hashedDictWord.equals(password)){
                     plaintext=wordList.get(i);
                     break;
                 }
@@ -151,7 +168,7 @@ public class PassCracking {
     public static String getMd5(String input) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
 
-        byte[] digestion = md.digest(input.getBytes());
+        //byte[] digestion = md.digest(input.getBytes());
         byte[] messageDigest = md.digest(input.getBytes());
 
         BigInteger IIIINT = new BigInteger(1, messageDigest);
@@ -163,6 +180,39 @@ public class PassCracking {
             hashtext = "0" + hashtext;
         }
         return hashtext;
+    }
+    public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash)
+    {
+        BigInteger num = new BigInteger(1, hash);
+
+        StringBuilder hexString = new StringBuilder(num.toString(16));
+
+        /*while (hexString.length() < 64)
+        {
+            hexString.insert(0, '0');
+        } */
+
+        return hexString.toString();
+    }
+
+    public static String toFLEXSTRING(byte[] hash)
+    {
+        BigInteger number = new BigInteger(1, hash);
+
+        StringBuilder FLEXSTRING = new StringBuilder(number.toString(16));
+
+        while (FLEXSTRING.length() < 64)
+        {
+            FLEXSTRING.insert(0, '0');
+        }
+
+        return FLEXSTRING.toString();
     }
 }
 
