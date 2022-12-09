@@ -149,7 +149,7 @@ public class PassCracking {
                     break;
                 }
             }else if(hashType.equals("-s")){
-                hashedDictWord=toHexString(THESHA256(wordList.get(i)));
+                hashedDictWord=toFLEXSTRING(THESHA256(wordList.get(i)));
                 if(hashedDictWord.equals(password)){
                     plaintext=wordList.get(i);
                     break;
