@@ -127,14 +127,14 @@ public class PassCracking {
             System.out.println(getMd5(passString));
             //if the compared hash is equal to the inputted hash, the plaintext pass is outputted.
             if(hashType.equals("-m")) {
-                if (getMd5(passString).equals(password)) {
+                 if (getMd5(passString).equals(password)) {
                     System.out.println("Here is the password: " + passString);
                     solved = true;
                     System.exit(0);
                 }
             }
 
-            if (index < gPass.size()-1) {
+            else if (index < gPass.size()-1) {
                 hashbrute(index + 1,hashType);
             }
         }
