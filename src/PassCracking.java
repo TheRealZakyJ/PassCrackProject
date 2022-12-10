@@ -195,15 +195,17 @@ public class PassCracking {
     }
     //generates a SHA256 hash through plaintext input
     public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
+        //generates the hash at a fixed size
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    //method to convert md5 hash to flex string.
+    //method to convert sha hash to byte array.
     public static String toFLEXSTRING(byte[] hash)
     {
+        //generates the BigInteger that will be used to return the byte array
         BigInteger number = new BigInteger(1, hash);
-
+        //converts BigInteger to String and adds a char sequence to create the byte array
         StringBuilder FLEXSTRING = new StringBuilder(number.toString(16));
 
         while (FLEXSTRING.length() < 64)
