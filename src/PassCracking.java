@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 public class PassCracking {
-
+    //initializing private variables
     private static String passType;
     private static String password;
     private static ArrayList<String> gPass=new ArrayList<>();
@@ -20,11 +20,13 @@ public class PassCracking {
     private static ArrayList<String> wordList;
     private static String hashType;
 
-
+    //setting up main method for command line arguements.
     public static void main(String[] args) throws FileNotFoundException, NoSuchAlgorithmException {
+        //setting private vars equal to what is passed in the command line
         password = args[0];
        passType = args[1];
        hashOrNah = args[2];
+       //checks for if the user prompts a brute or dictionary attack and if it is plaintext or hashed
         if (passType.equals("brute")) {
             if(hashOrNah.equals("-p")) {
                 while (!solved) {
@@ -73,6 +75,7 @@ public class PassCracking {
             }
         }
     }
+    //identifies the hash type that inputted in the command line
     public static String identify(String password){
         String hash = "";
         if(password.indexOf("$2") == 0)
@@ -90,6 +93,7 @@ public class PassCracking {
         return hash;
     }
 
+    //Recursive method that iterates through a list of chars until it has found the correct password
     public static boolean brute(int index) {
         for (int i = 0; i < charLen; i++) {
 
@@ -108,6 +112,8 @@ public class PassCracking {
         }
         return false;
     }
+    //method that finds the plaintext password from a hash
+    //hashes every iteration of a password from a char list and compares it to the hashed password.
     public static boolean hashbrute(int index, String hashType) throws NoSuchAlgorithmException {
         for (int i = 0; i < charLen; i++) {
             String passString= String.join("",gPass);
@@ -129,6 +135,7 @@ public class PassCracking {
     }
 
 
+    //method that goes through a dictionary of the 10000 most common passwords, and returns the correct one.
     public static void dict(String pass){
         if(wordList.contains(pass)){
             System.out.println(wordList.get(wordList.indexOf(pass)));
@@ -137,6 +144,7 @@ public class PassCracking {
         }
     }
 
+    //iterates through dictionary to compare hashes from there with the password inputted from the command line
     public static String hashDict(String hashType,String password) throws NoSuchAlgorithmException {
         String plaintext="No password found.";
         String hashedDictWord ="";
@@ -165,6 +173,7 @@ public class PassCracking {
         }
         return plaintext;
     }
+    //generates an MD5 hash
     public static String getMd5(String input) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
 
@@ -181,12 +190,14 @@ public class PassCracking {
         }
         return hashtext;
     }
+    //generates a SHA256 hash
     public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
+    //
     public static String toHexString(byte[] hash)
     {
         BigInteger num = new BigInteger(1, hash);
