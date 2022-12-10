@@ -2,7 +2,7 @@
 Java Password Cracker
 2022 CSHS Cybersecurity
 
-### Rubric (50/51)
+### Rubric (46/51)
 
 - [x] Able to load dataset of top 10K most common passwords (5)
 - [x] Implement brute force password cracking (10)
