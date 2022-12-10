@@ -13,6 +13,7 @@ public class PassCracking {
     private static String passType;
     private static String password;
     private static ArrayList<String> gPass=new ArrayList<>();
+    //ist of chars for brute force attack
     private static char[] charArr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
     private static int charLen = charArr.length;
     private static boolean solved = false;
@@ -29,13 +30,13 @@ public class PassCracking {
        //checks for if the user prompts a brute or dictionary attack and if it is plaintext or hashed
         if (passType.equals("brute")) {
             if(hashOrNah.equals("-p")) {
+                //will go through the while loop until the password is solved via brute force
                 while (!solved) {
-
+                    //adds element to gpass array list
                     gPass.add(Character.toString(charArr[0]));
 
                     for (int i = 0; i < gPass.size() - 1; i++) {
                         for (int j = 0; j < charLen; j++) {
-
                             gPass.set(i, Character.toString(charArr[j]));
                             solved = brute(i + 1);
 
@@ -45,9 +46,9 @@ public class PassCracking {
             }else if(hashOrNah.equals("-h")){
                 hashType=identify(password);
                 while (!solved) {
-
+                    //adds element to gpass array list
                     gPass.add(Character.toString(charArr[0]));
-
+                    //nested for loop to crack hashed password
                     for (int i = 0; i < gPass.size() - 1; i++) {
                         for (int j = 0; j < charLen; j++) {
 
@@ -61,12 +62,13 @@ public class PassCracking {
         } else if (passType.equals("dict")) {
             Scanner s = new Scanner(new File("10k-most-common.txt"));
             ArrayList<String> list = new ArrayList<>();
-            //String[] list1 = new String[10000];
+            //populating an Array List with 10k most common passwords
             while (s.hasNext()) {
                 String line = s.nextLine();
                 list.add(line);
             }
             wordList = list;
+            //prints plaintext password regardless of hash
             if(hashOrNah.equals("-p")) {
                 dict(password);
             }else if(hashOrNah.equals("-h")){
@@ -80,26 +82,29 @@ public class PassCracking {
         String hash = "";
         if(password.indexOf("$2") == 0)
         {
+            //bcrypt
             hash = "-b";
         }
         else if(password.length() == 32)
         {
+            //md5
             hash = "-m";
         }
         else if(password.length() == 64)
         {
+            //sha256
             hash = "-s";
         }
         return hash;
     }
 
-    //Recursive method that iterates through a list of chars until it has found the correct password
+    //method that iterates through a list of chars until it has found the correct password
     public static boolean brute(int index) {
         for (int i = 0; i < charLen; i++) {
-
+            //prints out the process of the brute force attack and iterates through char list
             gPass.set(index,Character.toString(charArr[i]));
             System.out.println(String.join("",gPass));
-
+            //if the pass is found then it will be printed
             if (String.join("",gPass).equals(password)) {
                 System.out.println("Here is the password: " + String.join("",gPass));
                 solved = true;
@@ -116,9 +121,11 @@ public class PassCracking {
     //hashes every iteration of a password from a char list and compares it to the hashed password.
     public static boolean hashbrute(int index, String hashType) throws NoSuchAlgorithmException {
         for (int i = 0; i < charLen; i++) {
+            //prints out the process of the brute force attack and iterates through char list, printing hashes
             String passString= String.join("",gPass);
             gPass.set(index,Character.toString(charArr[i]));
             System.out.println(getMd5(passString));
+            //if the compared hash is equal to the inputted hash, the plaintext pass is outputted.
             if(hashType.equals("-m")) {
                 if (getMd5(passString).equals(password)) {
                     System.out.println("Here is the password: " + passString);
@@ -148,7 +155,8 @@ public class PassCracking {
     public static String hashDict(String hashType,String password) throws NoSuchAlgorithmException {
         String plaintext="No password found.";
         String hashedDictWord ="";
-
+        //for loop first checks for which hash type it needs to decode
+        //Then it compares  hashed passwords from 10k pass list to the hash inputted in command line
         for(int i =0;i<wordList.size();i++){
             if(hashType.equals("-m")){
                 hashedDictWord=getMd5(wordList.get(i));
@@ -171,47 +179,27 @@ public class PassCracking {
             }
 
         }
+        //return the plaintext password
         return plaintext;
     }
     //generates an MD5 hash
     public static String getMd5(String input) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-
-        //byte[] digestion = md.digest(input.getBytes());
         byte[] messageDigest = md.digest(input.getBytes());
-
         BigInteger IIIINT = new BigInteger(1, messageDigest);
-
         String hashtext = IIIINT.toString(16);
-
-
         while (hashtext.length() < 32) {
             hashtext = "0" + hashtext;
         }
         return hashtext;
     }
-    //generates a SHA256 hash
+    //generates a SHA256 hash through plaintext input
     public static byte[] THESHA256(String input) throws NoSuchAlgorithmException{
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-
         return md.digest(input.getBytes(StandardCharsets.UTF_8));
     }
 
-    //
-    public static String toHexString(byte[] hash)
-    {
-        BigInteger num = new BigInteger(1, hash);
-
-        StringBuilder hexString = new StringBuilder(num.toString(16));
-
-        /*while (hexString.length() < 64)
-        {
-            hexString.insert(0, '0');
-        } */
-
-        return hexString.toString();
-    }
-
+    //method to convert md5 hash to flex string.
     public static String toFLEXSTRING(byte[] hash)
     {
         BigInteger number = new BigInteger(1, hash);
@@ -225,6 +213,7 @@ public class PassCracking {
 
         return FLEXSTRING.toString();
     }
+
 }
 
 
