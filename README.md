@@ -33,6 +33,8 @@ Java Password Cracker
     - java PassCracking d2i0 brute -p
     - java PassCracking 4a8da9001f6158b6b1a1a522056b7fd8 brute -h
     - java PassCracking ef6e65efc188e7dffd7335b646a85a21 dict -h
+    - java PassCracking d38681074467c0bc147b17a9a12b9efa8cc10bcf545f5b0bccccf5a93c4a2b79 dict -h
+
 
 
 
